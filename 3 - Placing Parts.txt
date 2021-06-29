@@ -58,7 +58,7 @@ While ENDTEST <> ""
 	
 	Constraints.AddUcsToUcs(name, "UCSs:1", name, name, "UCS1")
 	
-	oProgBar.Message = "Placing: " + name + ": " + CStr(i) + " of " + CStr(LastRow-1) + " components."
+	oProgBar.Message = "Placing: " + name + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " components."
 	oProgBar.UpdateProgress
 	
 	i = i + 1
