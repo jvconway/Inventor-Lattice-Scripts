@@ -1,0 +1,80 @@
+' Create a New part document
+Dim oDoc As PartDocument
+oDoc = ThisApplication.ActiveDocument
+oPath = ThisDoc.Path
+
+' Set a reference to the PartComponentDefinition object
+Dim oCompDef As PartComponentDefinition
+oCompDef = oDoc.ComponentDefinition
+
+Dim oTG As TransientGeometry
+oTG = ThisApplication.TransientGeometry
+
+' Create an empty definition object
+Dim oUCSDef As UserCoordinateSystemDefinition
+oUCSDef = oCompDef.UserCoordinateSystems.CreateDefinition
+
+'Create File Open Dialogue
+oDoc = ThisDoc.Document
+Dim oFileDlg As Inventor.FileDialog = Nothing
+InventorVb.Application.CreateFileDialog(oFileDlg)
+oFileDlg.Filter = "Excel files (*.xls)(*.xlsx)|*.xls;*.xlsx"
+oFileDlg.InitialDirectory = oPath
+
+
+'Show File Open Dialogue
+oFileDlg.DialogTitle = "Pick Lattice File"
+oFileDlg.ShowOpen()
+LatticeFile = oFileDlg.FileName
+
+GoExcel.Open(LatticeFile, "Sheet1")
+
+Dim i As Integer = 2
+Dim j As Integer = 0
+Dim x_pos As Double
+Dim y_pos As Double
+Dim z_pos As Double
+Dim length As Double
+Dim theta As Double
+Dim phi As Double
+Dim psi As Double
+Dim tag As String
+Dim UCSName As String
+Dim dPi = Math.PI
+ENDTEST = GoExcel.CellValue("A" & i)
+
+While ENDTEST <> ""
+	UCSName = GoExcel.CellValue("B" & i) & "_" & GoExcel.CellValue("A" & i)
+	theta = GoExcel.CellValue("G" & i) * 180 / dPi
+	phi = GoExcel.CellValue("F" & i) * 180 / dPi
+	psi = -GoExcel.CellValue("H" & i) * 180 / dPi
+	x_pos = GoExcel.CellValue("E" & i) * 1000
+	y_pos = GoExcel.CellValue("D" & i) * 1000
+	z_pos = GoExcel.CellValue("C" & i) * 1000
+
+	' Create an empty definition object
+	oUCSDef = oCompDef.UserCoordinateSystems.CreateDefinition
+
+	' Create the UCS
+	Dim oUCS As UserCoordinateSystem
+	oUCS = oCompDef.UserCoordinateSystems.Add(oUCSDef)
+	oUCS.Name = UCSName
+
+	Parameter("d" & j) = x_pos
+	j = j + 1
+	Parameter("d" & j) = y_pos
+	j = j + 1
+	Parameter("d" & j) = z_pos
+	j = j + 1
+	Parameter("d" & j) = theta
+	j = j + 1
+	Parameter("d" & j) = phi
+	j = j + 1
+	Parameter("d" & j) = psi
+	j = j + 1
+
+	i = i + 1
+
+	ENDTEST = GoExcel.CellValue("A" & i)
+
+End While
