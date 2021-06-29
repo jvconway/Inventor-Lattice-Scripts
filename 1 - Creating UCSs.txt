@@ -29,6 +29,16 @@ LatticeFile = oFileDlg.FileName
 
 GoExcel.Open(LatticeFile, "Sheet1")
 
+LastRow = 2
+ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+
+While ENDTEST1 <> ""
+	LastRow = LastRow + 1
+	ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+End While
+
+oProgBar = ThisApplication.CreateProgressBar(False, LastRow-2, "UCS Creation Progress")
+
 Dim i As Integer = 2
 Dim j As Integer = 0
 Dim x_pos As Double
@@ -72,6 +82,9 @@ While ENDTEST <> ""
 	j = j + 1
 	Parameter("d" & j) = psi
 	j = j + 1
+
+	oProgBar.Message = "Creating UCS: " + UCSName + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " UCSs."
+	oProgBar.UpdateProgress
 
 	i = i + 1
 
