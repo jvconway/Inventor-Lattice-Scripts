@@ -1,0 +1,55 @@
+'Define Part type (key) as in Lattice File
+key = "Solenoid"
+
+' Create a New part document
+Dim oDoc As PartDocument
+oDoc = ThisApplication.ActiveDocument
+oPath = ThisDoc.Path
+
+' Set a reference to the PartComponentDefinition object
+Dim oCompDef As PartComponentDefinition
+oCompDef = oDoc.ComponentDefinition
+
+Dim oTG As TransientGeometry
+oTG = ThisApplication.TransientGeometry
+
+' Create an empty definition object
+Dim oUCSDef As UserCoordinateSystemDefinition
+oUCSDef = oCompDef.UserCoordinateSystems.CreateDefinition
+
+'Create File Open Dialogue
+oDoc = ThisDoc.Document
+Dim oFileDlg As Inventor.FileDialog = Nothing
+InventorVb.Application.CreateFileDialog(oFileDlg)
+oFileDlg.Filter = "Excel files (*.xls)(*.xlsx)|*.xls;*.xlsx"
+oFileDlg.InitialDirectory = oPath
+
+
+'Show File Open Dialogue
+oFileDlg.DialogTitle = "Pick Lattice File"
+oFileDlg.ShowOpen()
+LatticeFile = oFileDlg.FileName
+
+GoExcel.Open(LatticeFile, "Sheet1")
+
+Dim i As Integer = 2
+Dim length As Double
+Dim tag As String
+ENDTEST = GoExcel.CellValue("A" & i)
+
+While ENDTEST <> ""
+	
+	tag = GoExcel.CellValue("I" & i)
+	length = GoExcel.CellValue("J" & i) * 1000
+		
+	If tag = key Then
+		Parameter("Length") = length
+		
+		ThisDoc.Document.SaveAs(oPath & "\" & tag & CStr(Floor(length)) & ".ipt" , True)
+	End If
+	
+	i = i + 1
+	
+	ENDTEST = GoExcel.CellValue("A" & i)
+
+End While
