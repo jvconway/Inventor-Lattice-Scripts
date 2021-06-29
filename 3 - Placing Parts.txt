@@ -1,0 +1,50 @@
+Dim oAsmDef As AssemblyDocument
+oDoc = ThisApplication.ActiveDocument
+oPath = ThisDoc.Path
+
+'Create File Open Dialogue
+oDoc = ThisDoc.Document
+Dim oFileDlg As Inventor.FileDialog = Nothing
+InventorVb.Application.CreateFileDialog(oFileDlg)
+oFileDlg.Filter = "Excel files (*.xls)(*.xlsx)|*.xls;*.xlsx"
+oFileDlg.InitialDirectory = oPath
+
+
+'Show File Open Dialogue
+oFileDlg.DialogTitle = "Pick Lattice File"
+oFileDlg.ShowOpen()
+LatticeFile = oFileDlg.FileName
+
+GoExcel.Open(LatticeFile, "Sheet1")
+
+Dim i As Integer = 2
+Dim length As Double
+Dim short_length As String
+Dim tag As String
+Dim name As String
+Dim type As String
+Dim partname As String
+ENDTEST = GoExcel.CellValue("A" & i)
+
+While ENDTEST <> ""
+	
+	name = GoExcel.CellValue("B" & i) & "_" & GoExcel.CellValue("A" & i)
+	type = GoExcel.CellValue("I" & i)
+	length = GoExcel.CellValue("J" & i) * 1000
+	short_length = Floor(length)	
+	partname = oPath & "\" & type & short_length & ".ipt"
+	
+	Dim pointA = ThisDoc.Geometry.Point(0,0,0)
+	Dim componentA = Components.Add(name, partname, position := pointA, grounded := False, visible := True, appearance := Nothing)
+	
+	Constraints.AddUcsToUcs(name, "UCSs:1", name, name, "UCS1")
+	
+	i = i + 1
+	ENDTEST = GoExcel.CellValue("A" & i)
+	
+End While
+
+MessageBox.Show("Finished", "Finished")
+
+GoExcel.FindRow("filename", "sheetname", "first column title", "operator", value to look for, "second column title", "operator", value to look for, "third column title",...)
+oProgressBar
