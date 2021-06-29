@@ -91,3 +91,7 @@ While ENDTEST <> ""
 	ENDTEST = GoExcel.CellValue("A" & i)
 
 End While
+
+oProgBar.Close
+
+MessageBox.Show("Finished", "Progress")
