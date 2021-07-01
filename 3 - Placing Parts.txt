@@ -43,12 +43,15 @@ While ENDTEST <> ""
 	type = GoExcel.CellValue("I" & i)
 	length = GoExcel.CellValue("J" & i) * 1000
 	angle = GoExcel.CellValue("K" & i) * (360 / (2 * PI))
-	angle = Abs(angle)
 	short_length = Floor(length)
-	short_angle = Floor(angle)
+	short_angle = Floor(Abs(angle))
 	
 	If type = "Sbend" Then
-		partname = oPath & "\" & type & short_length & "_" & short_angle & ".ipt"
+		If angle > 0 Then
+			partname = oPath & "\" & type & short_length & "_" & short_angle & ".ipt"
+		Else
+			partname = oPath & "\" & type & short_length & "_" & short_angle & "M" & ".ipt"
+		End If
 	Else
 		partname = oPath & "\" & type & short_length & ".ipt"
 	End If
