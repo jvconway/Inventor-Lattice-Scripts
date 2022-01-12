@@ -14,7 +14,7 @@ oFileDlg.DialogTitle = "Pick Lattice File"
 oFileDlg.ShowOpen()
 LatticeFile = oFileDlg.FileName
 
-GoExcel.Open(LatticeFile, "Sheet1")
+GoExcel.Open(LatticeFile, "cooler")
 
 LastRow = 2
 ENDTEST1 = GoExcel.CellValue("A" & LastRow)
