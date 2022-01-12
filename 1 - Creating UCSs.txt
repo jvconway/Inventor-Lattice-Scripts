@@ -71,17 +71,17 @@ While ENDTEST <> ""
 	oUCS = oCompDef.UserCoordinateSystems.Add(oUCSDef)
 	oUCS.Name = UCSName
 
-	Parameter("d" & j) = Z
-	j = j + 1
 	Parameter("d" & j) = X
 	j = j + 1
 	Parameter("d" & j) = Y
 	j = j + 1
-	Parameter("d" & j) = psi
+	Parameter("d" & j) = Z
 	j = j + 1
-	Parameter("d" & j) = -phi
+	Parameter("d" & j) = phi
 	j = j + 1
 	Parameter("d" & j) = -theta
+	j = j + 1
+	Parameter("d" & j) = -psi
 	j = j + 1
 
 	oProgBar.Message = "Creating UCS: " + UCSName + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " UCSs."
