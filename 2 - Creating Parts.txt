@@ -30,7 +30,7 @@ oFileDlg.DialogTitle = "Pick Lattice File"
 oFileDlg.ShowOpen()
 LatticeFile = oFileDlg.FileName
 
-GoExcel.Open(LatticeFile, "Sheet1")
+GoExcel.Open(LatticeFile, "cooler")
 
 Dim i As Integer = 2
 Dim length As Double
