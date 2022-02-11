@@ -28,7 +28,7 @@ While ENDTEST1 <> ""
 	ENDTEST1 = GoExcel.CellValue("A" & LastRow)
 End While
 
-oProgBar = ThisApplication.CreateProgressBar(False, LastRow-2, "Component Placement Progress")
+oProgBar = ThisApplication.CreateProgressBar(False, LastRow - 2, "Component Placement Progress")
 
 Dim i As Integer = 2
 Dim x_pos As Double
@@ -47,7 +47,6 @@ Dim dPi = Atan(1) * 4
 Dim oXAxis As UnitVector
 Dim oYAxis As UnitVector
 Dim oZAxis As UnitVector
-'Dim oMatrix As Matrix
 Dim oMatrix = ThisDoc.Geometry.Matrix()
 Dim oRotateMatrix = ThisDoc.Geometry.Matrix()
 
@@ -55,15 +54,15 @@ ENDTEST = GoExcel.CellValue("A" & i)
 
 
 
-While i<25 'ENDTEST <> "" 
-	
+While i<50 'ENDTEST <> "" 
+
 	name = GoExcel.CellValue("B" & i) & "_" & GoExcel.CellValue("A" & i)
 	type = GoExcel.CellValue("I" & i)
 	length = GoExcel.CellValue("J" & i) * 1000
 	angle = GoExcel.CellValue("K" & i) * (360 / (2 * PI))
 	short_length = Floor(length)
 	short_angle = Floor(Abs(angle))
-	
+
 	If type = "Sbend" Then
 		If angle > 0 Then
 			partname = oPath & "\" & type & short_length & "_" & short_angle & ".ipt"
@@ -73,26 +72,35 @@ While i<25 'ENDTEST <> ""
 	Else
 		partname = oPath & "\" & type & short_length & ".ipt"
 	End If
-	
+
 	X = GoExcel.CellValue("C" & i) * 1000
 	Y = GoExcel.CellValue("D" & i) * 1000
 	Z = GoExcel.CellValue("E" & i) * 1000
-	phi = GoExcel.CellValue("G" & i) '* 180 / dPi
+	phi = 0'GoExcel.CellValue("G" & i) '* 180 / dPi
 	theta = GoExcel.CellValue("F" & i) '* 180 / dPi
-	psi = GoExcel.CellValue("H" & i) '* 180 / dPi
-	
+	psi = 0'GoExcel.CellValue("H" & i) '* 180 / dPi
+
 	Dim pointA = ThisDoc.Geometry.Point(X, Y, Z)
-	Dim vectorX = ThisDoc.Geometry.Vector(Cos(phi) + Cos(psi), -Sin(psi), Sin(phi))
-	Dim vectorY = ThisDoc.Geometry.Vector(-Sin(psi), Cos(theta)+Cos(psi), -Sin(theta))
-	Dim vectorZ = ThisDoc.Geometry.Vector(-Sin(phi), Sin(theta), Cos(phi) + Cos(theta))
+	Dim X1 = Sin(theta) + Cos(psi) + 1
+	Dim X2 = Sin(psi)
+	Dim X3 = -Cos(theta)
+	Dim vectorX = ThisDoc.Geometry.Vector(X1, X2, X3)
+	Dim Y1 = -Sin(psi)
+	Dim Y2 = 1 + Sin(phi) + Cos(psi)
+	Dim Y3 = -Cos(phi)
+	Dim vectorY = ThisDoc.Geometry.Vector(Y1, Y2, Y3)
+	Dim Z1 = Cos(theta)
+	Dim Z2 = Cos(phi)
+	Dim Z3 = 1 + Sin(theta) + Sin(phi)
+	Dim vectorZ = ThisDoc.Geometry.Vector(Z1, Z2, Z3)
 	Dim matrixA = ThisDoc.Geometry.Matrix()
 	matrixA.SetCoordinateSystem(pointA, vectorX.AsUnitVector, vectorY.AsUnitVector, vectorZ.AsUnitVector)
-	
-	Dim componentA = Components.Add(name, partname, position := matrixA, grounded := True, visible := True, appearance := Nothing)
-	
 
-	
-	oProgBar.Message = "PlacingComponents: " + name + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " UCSs."
+	Dim componentA = Components.Add(name, partname, position := matrixA, grounded := True, visible := True, appearance := Nothing)
+
+
+
+	oProgBar.Message = "PlacingComponents: " + name + ": #" + CStr(i) + " of " + CStr(LastRow - 2) + " UCSs."
 	oProgBar.UpdateProgress
 
 	i = i + 1
