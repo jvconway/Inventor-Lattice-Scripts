@@ -1,20 +1,5 @@
-Dim oAsmDef As AssemblyDocument
-oDoc = ThisApplication.ActiveDocument
 oPath = ThisDoc.Path
-
-'Create File Open Dialogue
-oDoc = ThisDoc.Document
-Dim oFileDlg As Inventor.FileDialog = Nothing
-InventorVb.Application.CreateFileDialog(oFileDlg)
-oFileDlg.Filter = "Excel files (*.xls)(*.xlsx)|*.xls;*.xlsx"
-oFileDlg.InitialDirectory = oPath
-
-'Show File Open Dialogue
-oFileDlg.DialogTitle = "Pick Lattice File"
-oFileDlg.ShowOpen()
-LatticeFile = oFileDlg.FileName
-
-GoExcel.Open(LatticeFile, "cooler")
+GoExcel.Open(oPath & "/cooler.layout_table.xlsx", "cooler")
 
 LastRow = 2
 ENDTEST1 = GoExcel.CellValue("A" & LastRow)
