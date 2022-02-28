@@ -5,3 +5,9 @@ I developed this method for use in preliminary lattice design studies for the El
 1. Acquire *.layout_table file from lattice designer
 2. Create "template" part files for all elements.  For one-off elements or imaginary elements, create a part and save it with the proper name.  For common elements, like quads or bends, create a base model with, for example, the length parameterized. Create/Copy iLogic Rule 0 for these parts that parses \*.layout_table file and creates individual parts for each unique element.
 3. Create assembly file, create/copy iLogic Rule 0 that opens element "template" files and runs their Rule 0's creating all of the necessary unique part files, parses \*.layout_table file, and places the correct element part file in the correct location.
+
+# Pros
+- After initial setup each iteration is fast (<10 minutes)
+
+# Cons
+- Cannot adjust location of elements in assembly, if any changes are needed, must re-do Step 3 with new \*.layout_table file 
