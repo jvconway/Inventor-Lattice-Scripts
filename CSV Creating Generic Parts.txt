@@ -1,0 +1,28 @@
+'Define Part type (key) as in Lattice File
+key = "Solenoid"
+
+opath = ThisDoc.Path
+Dim ReadCSV As New System.IO.StreamReader(ThisDoc.Path & "\cooler.layout_table")
+Dim Elements As New ArrayList()
+
+Do While ReadCSV.Peek <> -1
+Elements.Add(ReadCSV.ReadLine.Split("	"))
+Loop
+
+Dim i As Integer = 1
+Dim length As Double
+Dim tag As String
+
+
+For i=1 To Elements.Count-1
+	
+	tag = Elements(i)(8)
+	length = Elements(i)(9) * 1000
+		
+	If tag = key Then
+		Parameter("Length") = length
+		
+		ThisDoc.Document.SaveAs(oPath & "\" & tag & CStr(Floor(length)) & ".ipt" , True)
+	End If
+
+Next
