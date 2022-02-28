@@ -1,0 +1,71 @@
+oPath = ThisDoc.Path
+GoExcel.Open(oPath & "/cooler.layout_table.xlsx", "cooler")
+
+
+LastRow = 2
+ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+
+While ENDTEST1 <> ""
+	LastRow = LastRow + 1
+	ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+End While
+
+oProgBar = ThisApplication.CreateProgressBar(False, LastRow-2, "UCS Creation Progress")
+
+Dim i As Integer = 2
+Dim j As Integer = 0
+Dim x_pos As Double
+Dim y_pos As Double
+Dim z_pos As Double
+Dim length As Double
+Dim theta As Double
+Dim phi As Double
+Dim psi As Double
+Dim tag As String
+Dim UCSName As String
+Dim dPi = Math.PI
+ENDTEST = GoExcel.CellValue("A" & i)
+
+While ENDTEST <> ""
+	UCSName = GoExcel.CellValue("B" & i) & "_" & GoExcel.CellValue("A" & i)
+		
+	X = GoExcel.CellValue("C" & i) * 1000
+	Y = GoExcel.CellValue("D" & i) * 1000
+	Z = GoExcel.CellValue("E" & i) * 1000
+	theta = GoExcel.CellValue("F" & i) * 180 / dPi
+	phi = GoExcel.CellValue("G" & i) * 180 / dPi
+	psi = GoExcel.CellValue("H" & i) * 180 / dPi
+
+	' Create an empty definition object
+	oUCSDef = oCompDef.UserCoordinateSystems.CreateDefinition
+
+	' Create the UCS
+	Dim oUCS As UserCoordinateSystem
+	oUCS = oCompDef.UserCoordinateSystems.Add(oUCSDef)
+	oUCS.Name = UCSName
+
+	Parameter("d" & j) = X
+	j = j + 1
+	Parameter("d" & j) = Y
+	j = j + 1
+	Parameter("d" & j) = Z
+	j = j + 1
+	Parameter("d" & j) = phi
+	j = j + 1
+	Parameter("d" & j) = -theta
+	j = j + 1
+	Parameter("d" & j) = -psi
+	j = j + 1
+
+	oProgBar.Message = "Creating UCS: " + UCSName + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " UCSs."
+	oProgBar.UpdateProgress
+
+	i = i + 1
+
+	ENDTEST = GoExcel.CellValue("A" & i)
+
+End While
+
+oProgBar.Close
+
+MessageBox.Show("Finished", "Progress")

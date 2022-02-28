@@ -1,0 +1,40 @@
+'Define Part type (key) as in Lattice File
+key = "Sbend"
+
+oPath = ThisDoc.Path
+GoExcel.Open(oPath & "/cooler.layout_table.xlsx", "cooler")
+
+
+Dim i As Integer = 2
+Dim length As Double
+Dim tag As String
+ENDTEST = GoExcel.CellValue("A" & i)
+
+While ENDTEST <> ""
+	
+	tag = GoExcel.CellValue("I" & i)
+	length = GoExcel.CellValue("J" & i) * 1000
+	angle = GoExcel.CellValue("K" & i) * (360 / (2 * PI))
+	absangle = Abs(angle)
+	
+	If tag = key Then
+		Parameter("Length") = length
+		Parameter("Angle") = absangle
+		
+		If angle > 0 Then
+			Parameter("d3") = -90
+			ThisDoc.Document.SaveAs(oPath & "\" & tag & CStr(Floor(length)) & "_" & CStr(Floor(absangle)) & ".ipt", True)
+		Else
+			Parameter("d3") = 90
+			ThisDoc.Document.SaveAs(oPath & "\" & tag & CStr(Floor(length)) & "_" & CStr(Floor(absangle)) & "M" & ".ipt", True)
+			
+		End If
+			
+	End If
+	
+	i = i + 1
+	
+	ENDTEST = GoExcel.CellValue("A" & i)
+	
+End While
+

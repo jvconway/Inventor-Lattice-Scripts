@@ -1,0 +1,59 @@
+oPath = ThisDoc.Path
+GoExcel.Open(oPath & "/cooler.layout_table.xlsx", "cooler")
+
+LastRow = 2
+ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+
+While ENDTEST1 <> ""
+	LastRow = LastRow + 1
+	ENDTEST1 = GoExcel.CellValue("A" & LastRow)
+End While
+
+oProgBar = ThisApplication.CreateProgressBar(False, LastRow-2, "Component Placement Progress")
+
+Dim i As Integer = 2
+Dim length As Double
+Dim short_length As String
+Dim tag As String
+Dim name As String
+Dim type As String
+Dim partname As String
+ENDTEST = GoExcel.CellValue("A" & i)
+
+
+
+While ENDTEST <> ""
+	
+	name = GoExcel.CellValue("B" & i) & "_" & GoExcel.CellValue("A" & i)
+	type = GoExcel.CellValue("I" & i)
+	length = GoExcel.CellValue("J" & i) * 1000
+	angle = GoExcel.CellValue("K" & i) * (360 / (2 * PI))
+	short_length = Floor(length)
+	short_angle = Floor(Abs(angle))
+	
+	If type = "Sbend" Then
+		If angle > 0 Then
+			partname = oPath & "\" & type & short_length & "_" & short_angle & ".ipt"
+		Else
+			partname = oPath & "\" & type & short_length & "_" & short_angle & "M" & ".ipt"
+		End If
+	Else
+		partname = oPath & "\" & type & short_length & ".ipt"
+	End If
+	
+	Dim pointA = ThisDoc.Geometry.Point(0,0,0)
+	Dim componentA = Components.Add(name, partname, position := pointA, grounded := False, visible := True, appearance := Nothing)
+	
+	Constraints.AddUcsToUcs(name, "UCSs:1", name, name, "UCS1")
+	
+	oProgBar.Message = "Placing: " + name + ": #" + CStr(i) + " of " + CStr(LastRow-2) + " components."
+	oProgBar.UpdateProgress
+	
+	i = i + 1
+	ENDTEST = GoExcel.CellValue("A" & i)
+	
+End While
+
+oProgBar.Close
+
+MessageBox.Show("Finished", "Progress")

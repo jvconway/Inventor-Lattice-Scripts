@@ -1,0 +1,112 @@
+opath = ThisDoc.Path
+
+Dim Types As New ArrayList()
+Types.Add("Pipe")
+Types.Add("Quad")
+Types.Add("Sbend")
+Types.Add("Solenoid")
+Types.Add("Drift")
+
+oProgBar = ThisApplication.CreateProgressBar(False, 1, "Generating Components")
+
+For j = 0 To Types.Count - 1
+		oProgBar.Message = "Generating " & Types(j) & "s"
+	oProgBar.UpdateProgress
+	Dim componentA = Components.Add(Types(j) & ":1", Types(j) & ".ipt", position := Nothing, grounded := False, visible := False, appearance := Nothing)
+	iLogicVb.RunRule(Types(j) & ":1", "Rule0")
+	Dim compOcc As ComponentOccurrence = Component.InventorComponent(Types(j) & ":1")
+	compOcc.Delete()
+Next
+
+oProgBar.Close
+
+Dim ReadCSV As New System.IO.StreamReader(ThisDoc.Path & "\cooler.layout_table")
+Dim Elements As New ArrayList()
+
+Do While ReadCSV.Peek <> -1
+Elements.Add(ReadCSV.ReadLine.Split("	"))
+Loop
+
+oProgBar = ThisApplication.CreateProgressBar(False, Elements.Count-1, "Component Placement")
+
+Dim i As Integer = 1
+Dim x_pos As Double
+Dim y_pos As Double
+Dim z_pos As Double
+Dim length As Double
+Dim short_length As String
+Dim theta As Double
+Dim phi As Double
+Dim psi As Double
+Dim tag As String
+Dim name As String
+Dim type As String
+Dim partname As String
+Dim dPi = Atan(1) * 4
+Dim oXAxis As UnitVector
+Dim oYAxis As UnitVector
+Dim oZAxis As UnitVector
+Dim oMatrix = ThisDoc.Geometry.Matrix()
+Dim oRotateMatrix = ThisDoc.Geometry.Matrix()
+
+
+
+
+
+For i=1 To Elements.Count-1
+
+	name = Elements(i)(1) & "_" & Elements(i)(0)
+	type = LTrim(Elements(i)(8))
+	length = Elements(i)(9) * 1000
+	angle = Elements(i)(10) * (360 / (2 * PI))
+	short_length = Floor(length)
+	short_angle = Floor(Abs(angle))
+
+	If type = "Sbend" Then
+		If angle > 0 Then
+			partname = opath & "\" & type & short_length & "_" & short_angle & ".ipt"
+		Else
+			partname = opath & "\" & type & short_length & "_" & short_angle & "M" & ".ipt"
+		End If
+	Else
+		partname = opath & "\" & type & short_length & ".ipt"
+	End If
+
+	X = Elements(i)(2) * 1000
+	Y = Elements(i)(3) * 1000
+	Z = Elements(i)(4) * 1000
+	phi = -Elements(i)(6)
+	theta = Elements(i)(5)
+	psi = Elements(i)(7)
+
+	Dim pointA = ThisDoc.Geometry.Point(X, Y, Z)
+	
+	'Rotation Matrix
+	Dim X1 = Cos(theta)*Cos(psi)+Sin(theta)*Sin(psi)*Sin(phi)
+	Dim X2 = Sin(psi)*Cos(phi)
+	Dim X3 = Cos(theta)*Sin(psi)*Sin(phi)-Sin(theta)*Cos(psi)
+	Dim vectorX = ThisDoc.Geometry.Vector(X1, X2, X3)
+	Dim Y1 = Sin(theta)*Cos(psi)*Sin(phi)-Cos(theta)*Sin(psi)
+	Dim Y2 = Cos(psi)*Cos(phi)
+	Dim Y3 = Sin(theta)*Sin(psi)+Cos(theta)*Cos(psi)*Sin(phi)
+	Dim vectorY = ThisDoc.Geometry.Vector(Y1, Y2, Y3)
+	Dim Z1 = Sin(theta)*Cos(phi)
+	Dim Z2 = -Sin(phi)
+	Dim Z3 = Cos(theta)*Cos(phi)
+	Dim vectorZ = ThisDoc.Geometry.Vector(Z1, Z2, Z3)
+	Dim matrixA = ThisDoc.Geometry.Matrix()
+	matrixA.SetCoordinateSystem(pointA, vectorX.AsUnitVector, vectorY.AsUnitVector, vectorZ.AsUnitVector)
+
+	Dim componentA = Components.Add(name, partname, position := matrixA, grounded := True, visible := True, appearance := Nothing)
+
+
+
+	oProgBar.Message = "PlacingComponents: " + name + ": #" + CStr(i) + " of " + CStr(Elements.Count-1)
+	oProgBar.UpdateProgress
+
+Next
+
+oProgBar.Close
+
+'zoom all
+ThisApplication.ActiveView.GoHome
