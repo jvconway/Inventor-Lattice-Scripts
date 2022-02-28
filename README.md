@@ -32,5 +32,5 @@ Coordinate systems in a CAD program are convenient for quickly and accurately lo
 
 User coordinate systems in Inventor can be a powerful tool in this process.  UCS's can be easily be placed by a script in an Inventor assembly (almost) directly using the same XYZ and theta, phi, psi parameters that are defined in the Bmad lattice. A UCS can be included in the part model, and when placing the part in the assembly, the part UCS can be very easily constrained to the UCS previously placed in the correct position and orientation.  Other elements such as pedestals, girders, or vacuum chambers may be constrained to the UCS's to define and preserve their position. Additionally, the parameters of UCS's are easily updated if changes to the lattice are made and if done carefully this method allows for small adjustments to be made and all relevant parts to be updated.  This method was used by Dave Burke in the design of CBETA at Cornell.
 
-#References
+# References
 1. Bmad Software Toolkit for Charged-Particle and X-Ray Simulations. http://www.lepp.cornell.edu/~dcs/bmad/overview.html
