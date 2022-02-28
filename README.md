@@ -6,9 +6,11 @@
 
 # v2 - Joe Conway - UCS's
  This was my first working version of the project. It requires conversion of the *.layout_table file to *.xlsx. It also uses the UCS method. This method is only included for historical documentation. It is much slower than v3 (hours v minutes) so not good for preliminary studies and has none of the positive feature's of Dave's method which make it good for detailed engineering.
+ 
+ # v3 - Joe Conway - UCSs from CSV
+ This code did not get preserved, but it would have used the UCS method of v2 but not needed the CSV to .xlsx conversion
 
-
-# v3 - Joe Conway - Direct to Asm from CSV
+# v4 - Joe Conway - Direct to Asm from CSV
  I developed this method for use in preliminary lattice design studies for the Electron Ion Collider Strong Hadron Cooling ERL (EIC SHC ERL).  After initial set up, it creates an assembly of a lattice in under 10 minutes.  It can be used to do space studies and take measurements, but cannot be modified/adjusted like Dave's method. A new lattice *.layout_table file must be generated and this method run from scratch (again < 10 minutes) to generate a new assembly.
 
 # Introduction
