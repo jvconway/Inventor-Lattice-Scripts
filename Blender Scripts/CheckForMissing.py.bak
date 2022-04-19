@@ -41,7 +41,7 @@ def map_table_dict(line):
     return d
 
 ###Open and read layout table file
-f = open("C:/Users/Josep/Documents/GitHub/eic-cooler/blender/cooler/cooler.layout_table", 'r') 
+f = open("C:/Users/Josep/Desktop/Blender Lattice/cooler.layout_table", 'r') 
 header=f.readline()
 lat = [map_table_dict(line) for line in f]
 f.close()
