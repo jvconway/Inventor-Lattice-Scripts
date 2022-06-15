@@ -23,7 +23,7 @@ Through the use of iLogic scripts in Autodesk Inventor, a \*.layout\_table can b
 \*.layout\_table files are also being used to generate 3D models of lattices in Blender and procedures to import Inventor models into Blender and Blender models into Inventor are being created for samity checks and to be able to take advantage of each program's unique strong points.
 
 # Bmad Lattice
-Bmad is one of many tools a physicist can use to design or analyze a particle accelerator. In relation to this document Bmad was used to design the lattice for the CBETA project at Cornell, a joint effort between CLASSE and BNL, and is being used by XELERA Research to help design the ERL to be used for Strong Hadron Cooling at the Electron Ion Cooler at BNL. A link for Bmad documentation can be found in the References Section [(Ref 1)][1].
+Bmad is one of many tools a physicist can use to design or analyze a particle accelerator. In relation to this document Bmad was used to design the lattice for the CBETA project at Cornell, a joint effort between CLASSE and BNL, and is being used by XELERA Research to help design the ERL to be used for Strong Hadron Cooling at the Electron Ion Cooler at BNL. A link for Bmad documentation can be found in the References Section [^1].
 
 For the purposes of this document, Bmad can output a \*.layout\_table file that consists of data describing features of the elements of the lattice. We are most interested in the elements' name, type, XYZ position, theta, phi, psi orientation, length, and bend angle (if appropriate).  Other properties may be described in the file that are not always used, or may be added to the file by request to the lattice designer.
 
@@ -39,4 +39,4 @@ User coordinate systems in Inventor can be a powerful tool in this process.  UCS
 
 
 # References
-[1]. Bmad Software Toolkit for Charged-Particle and X-Ray Simulations. http://www.lepp.cornell.edu/~dcs/bmad/overview.html
+[^1]. Bmad Software Toolkit for Charged-Particle and X-Ray Simulations. http://www.lepp.cornell.edu/~dcs/bmad/overview.html
