@@ -26,6 +26,7 @@ from mathutils import Matrix, Vector
 from math import sin, cos, pi, sqrt, floor
 from pathlib import Path
 import datetime
+import winsound
 
 ## Define path to catalog models
 catalog = 'C:/Users/Josep/Dropbox (Xelera)/Cooler Technical/Blender/Catalog'
@@ -125,4 +126,11 @@ for ele in lat:  #for each element in the lattice
             bpy.context.object.rotation_euler[1] += ele['psi']
             bpy.context.object.rotation_euler[0] += -ele['phi']
             
+            print(elename + ' ID: ' + str(ele['index']))
+            
 print('=============FINISHED PLACING ELEMENT MODELS==================', datetime.datetime.now())
+
+
+frequency = 2500  # Set Frequency To 2500 Hertz
+duration = 500  # Set Duration To 1000 ms == 1 second
+winsound.Beep(frequency, duration)

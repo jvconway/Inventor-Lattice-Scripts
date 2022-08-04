@@ -5,7 +5,7 @@ import re
 from mathutils import Matrix, Vector
 from math import sin, cos, pi, sqrt, floor
 from pathlib import Path
-
+import winsound
 
 catalog = 'C:/Users/Josep/Dropbox (Xelera)/Cooler Technical/Blender/Catalog'
 
@@ -77,3 +77,8 @@ for ele in lat:  #for each element in the lattice
         continue
     
 print('=============END CHECK==================')
+
+
+frequency = 2500  # Set Frequency To 2500 Hertz
+duration = 200  # Set Duration To 1000 ms == 1 second
+winsound.Beep(frequency, duration)
