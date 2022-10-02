@@ -5,6 +5,7 @@ import re
 from mathutils import Matrix, Vector
 from math import sin, cos, pi, sqrt, floor
 from pathlib import Path
+import winsound
 
 ## Define path to catalog models
 catalog = 'C:/Users/Josep/Dropbox (Xelera)/Cooler Technical/Blender/Catalog/HSR/'
@@ -61,32 +62,20 @@ for ele in lat:  #for each element in the lattice
         continue
     elif p.exists() == True:
         continue
-    elif ele['key'] == 'Pipe':
+    elif ele['key'] == 'Quadrupole':
     
         bpy.ops.object.select_all(action='SELECT')
         bpy.ops.object.delete() 
         
-        L = ele['L']*1000
+        L = ele['L']
         filepath = catalog + elename + '.blend'
 
-        bpy.ops.mesh.primitive_cylinder_add(radius=0.019, depth=L-(.012*2), enter_editmode=False, align='WORLD', location=(0, 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.6096, depth=L, enter_editmode=False, align='WORLD', location=(0, 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
         bpy.ops.object.shade_smooth()
         obj = bpy.context.object
-        mat = bpy.data.materials['Steel']
+        mat = bpy.data.materials['Quad Blue Paint']
         obj.data.materials.append(mat)
 
-        bpy.ops.mesh.primitive_cylinder_add(radius=0.035, depth=.012, enter_editmode=False, align='WORLD', location=((L/2)-(0.012/2), 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
-        obj = bpy.context.object
-        mat = bpy.data.materials['Steel']
-        obj.data.materials.append(mat)
-
-        bpy.ops.mesh.primitive_cylinder_add(radius=0.035, depth=.012, enter_editmode=False, align='WORLD', location=(-((L/2)-(0.012/2)), 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
-        obj = bpy.context.object
-        mat = bpy.data.materials['Steel']
-        obj.data.materials.append(mat)
-        
         print(elename)
         bpy.ops.wm.save_as_mainfile(filepath=filepath)
                 
@@ -94,3 +83,7 @@ for ele in lat:  #for each element in the lattice
         continue
     
 print('=============FINISHED CREATE==================')
+
+frequency = 2500  # Set Frequency To 2500 Hertz
+duration = 200  # Set Duration To 1000 ms == 1 second
+winsound.Beep(frequency, duration)

@@ -59,12 +59,14 @@ for ele in lat:  #for each element in the lattice
     p = Path(file_path)
     if ele['L'] == 0:  #if the element length is 0 skip
         continue
+    elif p.exists() == True:
+        continue
     elif ele['key'] == 'Drift':
     
         bpy.ops.object.select_all(action='SELECT')
         bpy.ops.object.delete() 
         
-        L = ele['L']*1000
+        L = ele['L']
         filepath = catalog + elename + '.blend'
 
         bpy.ops.mesh.primitive_cylinder_add(radius=0.019, depth=L-(.012*2), enter_editmode=False, align='WORLD', location=(0, 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
