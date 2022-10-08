@@ -71,7 +71,7 @@ for ele in lat:  #for each element in the lattice
         filepath = catalog + elename + '.blend'
 
         bpy.ops.mesh.primitive_cylinder_add(radius=0.6096, depth=L, enter_editmode=False, align='WORLD', location=(0, 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
+        #bpy.ops.object.shade_smooth()
         obj = bpy.context.object
         mat = bpy.data.materials['Dipole Red Paint']
         obj.data.materials.append(mat)

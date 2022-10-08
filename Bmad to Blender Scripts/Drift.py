@@ -71,19 +71,19 @@ for ele in lat:  #for each element in the lattice
         filepath = catalog + elename + '.blend'
 
         bpy.ops.mesh.primitive_cylinder_add(radius=0.019, depth=L-(.012*2), enter_editmode=False, align='WORLD', location=(0, 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
+        #bpy.ops.object.shade_smooth()
         obj = bpy.context.object
         mat = bpy.data.materials['Steel']
         obj.data.materials.append(mat)
 
         bpy.ops.mesh.primitive_cylinder_add(radius=0.035, depth=.012, enter_editmode=False, align='WORLD', location=((L/2)-(0.012/2), 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
+        #bpy.ops.object.shade_smooth()
         obj = bpy.context.object
         mat = bpy.data.materials['Steel']
         obj.data.materials.append(mat)
 
         bpy.ops.mesh.primitive_cylinder_add(radius=0.035, depth=.012, enter_editmode=False, align='WORLD', location=(-((L/2)-(0.012/2)), 0, 0), rotation=(0, 1.5708, 0), scale=(1, 1, 1))
-        bpy.ops.object.shade_smooth()
+        #bpy.ops.object.shade_smooth()
         obj = bpy.context.object
         mat = bpy.data.materials['Steel']
         obj.data.materials.append(mat)
